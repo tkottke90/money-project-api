@@ -1,7 +1,7 @@
 {
   "name": "money-2-server",
   "description": "Personal finance app",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "homepage": "",
   "main": "src",
   "keywords": [
@@ -16,7 +16,8 @@
   "directories": {
     "lib": "src",
     "test": "test/",
-    "config": "config/"
+    "config": "config/",
+    "bin": "scripts/"
   },
   "engines": {
     "node": "^10.0.0",
@@ -27,7 +28,11 @@
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "nodemon src/",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --exit",
+    "deploy": "node scripts/deploy-manager.js revision -t tkottke/money-api",
+    "deploy:minor": "node scripts/deploy-manager.js minor -t tkottke/money-api",
+    "deploy:major": "node scripts/deploy-manager.js major -t tkottke/money-api",
+    "deploy:start": "docker run -d --name money-api -p 3000:3000 tkottke/money-api:latest && docker ps -a"
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.6",
@@ -43,6 +48,7 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
+    "minimist": "^1.2.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.19.1",
     "request": "^2.88.0",

@@ -1,8 +1,10 @@
 FROM node:10.16
 
+RUN mkdir -p /home/app
+
 WORKDIR /home/app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
@@ -14,4 +16,4 @@ RUN npm test
 
 CMD ["npm", "start"]
 
-EXPOSE 3030
+EXPOSE 3000
