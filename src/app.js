@@ -10,6 +10,7 @@ const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 
+const neode = require('../neode-module.js');
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -45,6 +46,8 @@ app.configure(socketio(
     
   }
 ));
+
+app.configure(neode);
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);

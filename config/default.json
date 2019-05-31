@@ -5,5 +5,10 @@
   "paginate": {
     "default": 10,
     "max": 50
+  },
+  "neode": {
+    "url": "bolt://localhost:7687",
+    "username": "neo4j",
+    "password": "password"
   }
 }
