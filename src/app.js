@@ -32,7 +32,19 @@ app.use('/', express.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(express.rest());
-app.configure(socketio());
+app.configure(socketio(
+  (io) => {
+    io.on('connection', function(socket) {
+      socket.emit('news', { text: 'A client connected!' });
+      logger.log('info', `User Connected: ${socket.id}`);
+
+      socket.on('my other event', function (data) {
+        logger.log('info', data);
+      });
+    });
+    
+  }
+));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
