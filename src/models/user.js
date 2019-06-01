@@ -2,7 +2,8 @@ module.exports = {
   id: {
     type: 'uuid',
     primary: true,
-    required: true
+    required: true,
+    unique: true
   },
   first_name: {
     type: 'string',
@@ -14,17 +15,18 @@ module.exports = {
   },
   email: {
     type: 'email',
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: 'string',
     required: true
   },
   createdAt: {
-    type: 'datetime'
+    type: 'isoDate'
   },
   updatedAt: {
-    type: 'datetime'
+    type: 'isoDate'
   },
   cycles: {
     type: 'relationship',
