@@ -26,9 +26,14 @@ class Service extends AdapterService {
         data
       };
     } 
-
     return data;
   }
+
+  toObject(map) {
+    const output = {};
+    map.map( item => output[item[0]] = item[1] );
+    return output;
+  } 
 
   setup(app) {
     this.app = app;
@@ -40,8 +45,6 @@ class Service extends AdapterService {
     const skip = params.query.$skip || 0;
 
     const modelName = this.options.Model._name;
-
-    console.log(this.neode.models.get(modelName));
 
     let result = await this.neode.all(modelName, {}, {}, limit, skip);
     
@@ -56,16 +59,37 @@ class Service extends AdapterService {
       return nodes;
     });
 
-    console.log(result, limit, skip);
     
     return this.generatePaginate(result);
   }
 
   get(id, params) {}
 
-  create(data, params) {
-    const modelName = 
-    // let result = await this.neode.create()
+  async create(data, params) {    
+    // Compare data to model
+    const model = this.neode.models.get(this.modelName);
+    const schema = this.toObject(Array.from(model._properties));
+
+    // Check for conflicting data properties
+    for (let property of Object.keys(data)) {
+      // Check for fields that are not listed in the model in the data object
+      if (!Object.keys(schema).includes(property)) return new errors.Conflict('Value Not Part of Model!', { model: this.modelName, property });
+      
+      // Check if schema defines the field as unique
+      if (schema[property]._unique) {
+        const unique = await this.neode.cypher(`MATCH (n:${this.modelName}) WHERE n.${property}="${data[property]}" RETURN count(n)`);
+
+        if (unique.records[0]._fields[0].low > 0) return new errors.Conflict('Unique Value In Use', { model: this.modelName, property: { name: property, value: data[property] }});
+      }
+    }
+
+    // Add createdAt and updatedAt properties
+    data = { ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+
+    // Send to neo4j
+    const result = await this.neode.create(this.modelName, data);
+
+    return this.toObject(Array.from(result._properties));
   }
     
   patch(id, data, params) {}
