@@ -28,6 +28,12 @@ module.exports = {
   updatedAt: {
     type: 'isoDate'
   },
+  last_login: {
+    type: 'isoDate'
+  },
+  age: {
+    type: 'number'
+  },
   cycles: {
     type: 'relationship',
     target: 'cycle',
