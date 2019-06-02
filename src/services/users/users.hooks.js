@@ -1,18 +1,25 @@
+const { authenticate } = require('@feathersjs/authentication').hooks;
+const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
 
+const test = () => {
+  return async context => {
+    console.log('Method: ', context.method);
+  };
+};
 
 module.exports = {
   before: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
+    all: [test()],
+    find: [authenticate('jwt')],
+    get: [authenticate('jwt')],
+    create: [hashPassword()],
+    update: [hashPassword(), authenticate('jwt')],
+    patch: [hashPassword(), authenticate('jwt')],
     remove: []
   },
 
   after: {
-    all: [],
+    all: [protect('password')],
     find: [],
     get: [],
     create: [],
