@@ -10,6 +10,13 @@ class Service extends AdapterService {
       throw errors.FeathersError('You must provide a Neode Model');
     }
 
+    console.log(Object.keys(options.Model));
+
+    let neode = options.Model._neode;
+
+    options.id = typeof options.Model._primary_key === 'object' && options.Model._primary_key[0] !== undefined
+      ? options.Model._primary_key[0] : 'id';
+
     super(options);
 
 
