@@ -5,7 +5,7 @@ module.exports = {
     required: true
   },
   timestamp: {
-    type: 'datetime',
+    type: 'isoDate',
     required: true
   },
   description: {
@@ -15,17 +15,17 @@ module.exports = {
     type: 'float',
     precision: 2
   },
-  transaction_type: {
+  createdAt: {
+    type: 'isoDate'
+  },
+  updatedAt: {
+    type: 'isoDate'
+  },
+  type: {
     type: 'relationship',
-    target: 'type',
+    target: 'transaction_type',
     relationship: 'TYPE_OF_TRANSACTION',
     direction: 'out'
-  },
-  generator: {
-    type: 'relationship',
-    target: 'user',
-    relationship: 'GENERATED_BY',
-    direction: 'in'
   },
   category: {
     type: 'relationships',
@@ -37,10 +37,10 @@ module.exports = {
       result: 'float'
     }
   },
-  createdAt: {
-    type: 'datetime'
-  },
-  updatedAt: {
-    type: 'datetime'
+  user: {
+    type: 'relationship',
+    target: 'user',
+    direction: 'in',
+    relationship: 'CREATED_BY'
   }
 };
