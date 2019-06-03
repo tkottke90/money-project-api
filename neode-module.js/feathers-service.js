@@ -10,8 +10,6 @@ class Service extends AdapterService {
       throw errors.FeathersError('You must provide a Neode Model');
     }
 
-    console.log(Object.keys(options.Model));
-
     let neode = options.Model._neode;
 
     options.id = typeof options.Model._primary_key === 'object' && options.Model._primary_key[0] !== undefined
@@ -67,7 +65,6 @@ class Service extends AdapterService {
         return builder.whereNot(`n.${key}`, value);
       },
       $in: (builder, key, value) => {
-        console.log(key, value);
         // If field is of a number type, mutate the values to be numbers
         if (['number', 'integer', 'int', 'float'].includes(this.schema[key].type)){
           return builder.whereBetween(`n.${key}`, +value[0], +value[1]);
@@ -115,7 +112,6 @@ class Service extends AdapterService {
     builder.match('n', this.modelName);
 
     Object.keys(queryParams).map( key => {
-      console.log(typeof queryParams[key], key, queryParams[key]);
 
       // Grab skip and limit keywords
       if (key === "$limit") {
@@ -145,7 +141,6 @@ class Service extends AdapterService {
           }
         } else {
           Object.keys(queryParams[key]).map( prop => {
-            console.log(prop, Number.isNaN(+prop));
 
             if (Number.isNaN(+prop)){
               builder = operations[prop](builder, key, queryParams[key][prop]);
@@ -211,6 +206,18 @@ class Service extends AdapterService {
     // Compare data to model
     const model = this.neode.models.get(this.modelName);
     const schema = this.toObject(model._properties);
+
+    // Extract relationships from data object and add them to params
+    const relationships = this.toObject(model._relationships);
+    Object.keys(relationships).map( key => {
+      if (!params.relationships) {
+        params.relationships = {};
+      }
+
+      params.relationships[key] = relationships[key];
+      delete data[key];
+    });
+
 
     // Check for conflicting data properties
     for (let property of Object.keys(data)) {
