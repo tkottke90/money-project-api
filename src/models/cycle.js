@@ -4,6 +4,10 @@ module.exports = {
     primary: true,
     required: true
   },
+  name: {
+    type: 'string',
+    required: true
+  },
   year: {
     type: 'number',
     required: true,
