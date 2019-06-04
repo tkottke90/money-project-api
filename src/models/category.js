@@ -17,5 +17,11 @@ module.exports = {
   },
   updatedAt: {
     type: 'datetime'
+  },
+  user: {
+    type: 'relationship',
+    target: 'user',
+    direction: 'in',
+    relationship: 'CREATED_BY'
   }
 };
