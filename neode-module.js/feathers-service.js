@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Implement Feathers Common API 
 // https://docs.feathersjs.com/api/databases/common
 
@@ -49,7 +50,7 @@ class Service extends AdapterService {
   feathersToNeode(queryParams) {
     const operations = {
       $limit: (builder, key, value) => {
-        return builder.limit(+value)
+        return builder.limit(+value);
       },
       $skip: (builder, key, value) => {
         return builder.skip(+value);
@@ -101,11 +102,8 @@ class Service extends AdapterService {
       },
       $gte: (builder, key, value) => {
         return builder.whereRaw(`n.${key} >= ${value}`);
-      },
-      $ne: (builder, key, value) => {
-        return builder.whereNot(`n.${key}`, value);
       }
-    }
+    };
 
     let builder = this.neode.query();
 
@@ -114,22 +112,22 @@ class Service extends AdapterService {
     Object.keys(queryParams).map( key => {
 
       // Grab skip and limit keywords
-      if (key === "$limit") {
+      if (key === '$limit') {
         builder = operations.$limit(builder, key, queryParams[key]);
         return;
       }
 
-      if (key === "$skip") {
+      if (key === '$skip') {
         builder = operations.$skip(builder, key, queryParams[key]);
         return;
       }
 
-      if (key === "$sort") {
-        builder = operations.$sort(builder, key, queryParams[key])
-        return
+      if (key === '$sort') {
+        builder = operations.$sort(builder, key, queryParams[key]);
+        return;
       }
 
-      if (key === "$select") return;
+      if (key === '$select') return;
 
       if (typeof queryParams[key] !== 'object') {
         builder.where(`n.${key}`, queryParams[key]);
@@ -137,7 +135,7 @@ class Service extends AdapterService {
         if (Array.isArray(queryParams[key])) {
           builder.where(`n.${key}`, queryParams[key][0]);
           for(let i = 1; i < queryParams[key].length; i++) {
-            builder.or(`n.${key}`, queryParams[key][i])
+            builder.or(`n.${key}`, queryParams[key][i]);
           }
         } else {
           Object.keys(queryParams[key]).map( prop => {
@@ -178,7 +176,7 @@ class Service extends AdapterService {
 
     if (params.query.$select) {
       result = result.map( record => {
-        const selectedRecord = {}
+        const selectedRecord = {};
         params.query.$select.map( item => {
           selectedRecord[item] = record[item];
         });
@@ -214,7 +212,7 @@ class Service extends AdapterService {
         params.relationships = {};
       }
 
-      params.relationships[key] = relationships[key];
+      params.relationships[key] = data[key];
       delete data[key];
     });
 
@@ -233,7 +231,7 @@ class Service extends AdapterService {
     }
 
     // Add createdAt and updatedAt properties
-    data = { ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+    data = { ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
 
     // Send to neo4j
     const result = await this.neode.create(this.modelName, data);
@@ -316,7 +314,7 @@ class Service extends AdapterService {
 
     await node.delete();
 
-    const result = await this.neode.create(this.modelName, data)
+    const result = await this.neode.create(this.modelName, data);
     return this.toObject(result._properties);
   }
 
