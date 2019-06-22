@@ -21,7 +21,7 @@ module.exports = {
   updatedAt: {
     type: 'isoDate'
   },
-  type: {
+  transaction_type: {
     type: 'relationship',
     target: 'transaction_type',
     relationship: 'TYPE_OF_TRANSACTION',
