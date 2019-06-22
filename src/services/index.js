@@ -1,6 +1,6 @@
 const users = require('./users/users.service.js');
 const transactions = require('./transactions/transactions.service.js');
-const types = require('./types/types.service.js');
+const types = require('./types/transaction_types.service.js');
 const category = require('./category/category.service.js');
 const cycle = require('./cycle/cycle.service.js');
 // eslint-disable-next-line no-unused-vars
