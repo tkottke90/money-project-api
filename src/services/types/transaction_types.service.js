@@ -1,6 +1,6 @@
 // Initializes the `types` service on path `/types`
 const createService = require('../../../neode-module.js/feathers-service');
-const hooks = require('./types.hooks');
+const hooks = require('./transaction_types.hooks');
 
 module.exports = function (app) {
   
