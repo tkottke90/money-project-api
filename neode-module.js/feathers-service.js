@@ -332,6 +332,8 @@ class Service extends AdapterService {
     return result._deleted ? {} : new errors.GeneralError('Unable to Delete Node');
     
   }
+
+  async relationship() {}
 }
 
 const init = options => new Service(options);
