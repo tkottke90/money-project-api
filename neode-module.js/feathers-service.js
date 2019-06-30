@@ -239,7 +239,7 @@ class Service extends AdapterService {
     // Send to neo4j
     const result = await this.neode.create(this.modelName, data);
 
-    return this.toObject(result._properties);
+    return params.raw ? result : this.toObject(result._properties);
   }
     
   async patch(id, data, params) {
