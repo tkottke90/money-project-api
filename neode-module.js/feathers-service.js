@@ -168,7 +168,10 @@ class Service extends AdapterService {
     const query = this.feathersToNeode(params.query);
     let result = await this.neode.cypher(query.query, query.params);
 
-    delete result._neode;
+    // If the 'raw' param is set, return the neode node rather than the property object
+    if (params.raw) {
+      return result;
+    }
 
     result = result.records.map( record => {
       return record._fields[0].properties;
