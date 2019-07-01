@@ -200,7 +200,7 @@ class Service extends AdapterService {
     // If the query returns null, then no record found to be patched
     if (!node) return new errors.Conflict('Invalid ID');
 
-    return this.toObject(node._properties);
+    return params.raw ? node : this.toObject(node._properties);
   }
 
   async create(data, params) {    
