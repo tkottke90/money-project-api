@@ -192,9 +192,6 @@ class Service extends AdapterService {
   }
 
   async get(id, params) {
-    // Compare data to model
-    const model = this.neode.models.get(this.modelName);
-
     const node = await this.neode.first(this.modelName, 'id', id);
 
     // If the query returns null, then no record found to be patched
