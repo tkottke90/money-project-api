@@ -10,6 +10,7 @@ module.exports = {
   },
   current_value: {
     type: 'number',
+    required: true,
     precision: 2
   },
   createdAt: {
