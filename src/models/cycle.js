@@ -16,17 +16,17 @@ module.exports = {
     max: 3000
   },
   start_date: {
-    type: 'datetime',
+    type: 'isoDate',
     required: true
   },
   end_date: {
-    type: 'datetime',
+    type: 'isoDate',
     required: true
   },
   createdAt: {
-    type: 'datetime'
+    type: 'isoDate'
   },
   updatedAt: {
-    type: 'datetime'
+    type: 'isoDate'
   }
 };

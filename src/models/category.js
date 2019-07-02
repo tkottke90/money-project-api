@@ -14,10 +14,10 @@ module.exports = {
     precision: 2
   },
   createdAt: {
-    type: 'datetime'
+    type: 'isoDate'
   },
   updatedAt: {
-    type: 'datetime'
+    type: 'isoDate'
   },
   user: {
     type: 'relationship',
