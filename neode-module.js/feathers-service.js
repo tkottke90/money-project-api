@@ -22,6 +22,24 @@ class Service extends AdapterService {
     this.options = options;
     this.modelName = this.options.Model._name;
     this.protectedFields = [];
+  
+    // Get a list of relationship names, then map those to an empty object
+    this.relationships = Array.from(options.Model._relationships)
+      .map( item => item[1]._name )
+      .reduce( (acc, cur) => {
+        // By default each relationship will return an empty object or no properties on the node
+        return acc = { ...acc, [cur]: () => { return {}; } };
+      }, {});
+
+    // If the user provided relationship functions in the options, update the relationships with those functions
+    if (options.relationships) {
+      // Get the list of the relationships the user entered
+      const keys = Object.keys(options.relationships);
+
+      keys.forEach( key => {
+        this.relationships[key] = options.relationships[key];
+      });
+    }
   }
 
   generatePaginate(data, limit = 0, skip = 0) {
