@@ -5,17 +5,43 @@
 /**
 * Generate link to current user if the schema defines a link
 */
+
+const logger = require('../logger');
+
 module.exports = () => {
   return async context => {
-    // If there is a user relationship in the schema
-    if (context.service.schema.user && context.result.type !== 'FeathersError'){
-      const neode = context.app.get('neo4j');
-      const user = await neode.first('user', 'id', context.params.user.id);
-      const node = await neode.first(context.path, 'id', context.result.id);
 
-      // Create Relationship
-      await node.relateTo(user, 'user', {});
+    // If there is a user relationship in the schema
+    if (Object.keys(context.params.relationships).includes('user')) {
+      try {
+        const neode = context.app.get('neo4j');
+        const user = await neode.first('user', 'id', context.params.user.id);
+        const node = await neode.first(context.path, 'id', context.params.raw ? context.result._properties.get('id') : context.result.id);
+        // Create Relationship
+        await node.relateTo(user, 'user', {});
+
+        logger.info(`Create User Link - ${context.path}`, {
+          user: context.params.user.id,
+          data: {
+            user: {
+              label: 'user',
+              key: 'id',
+              value: context.params.user.id
+            },
+            node: {
+              label: context.path,
+              key: 'id',
+              value: context.params.raw ? context.result._properties.get('id') : context.result.id
+            }
+          }
+        });
+      } catch (err) {
+        logger.error(err);
+      }
+      
     }
+
+
     return context;
   };
 };
