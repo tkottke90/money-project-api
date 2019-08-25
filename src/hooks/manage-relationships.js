@@ -51,7 +51,7 @@ module.exports = () => {
           },
           'object-array': async () => {
             // Iterate over array
-            const elements = await Promise.all(context.params.relationships[relation].map( async (item, index) => {
+            const elements = await Promise.all(context.params.relationships[relation].map( async item => {
               let relationProperties;
 
               // Get node to be related to the initial node.  If it is user specific, get the specific node via
@@ -75,7 +75,7 @@ module.exports = () => {
                 return null;
               }
 
-
+              logger.log('info', 'Relationship successfully created', { user: context.params.user.id, nodeA: transactionNode._identity.low, nodeB: partner._identity.low });
               return mapToObject(partner._properties);
             }));
 
@@ -96,12 +96,12 @@ module.exports = () => {
               logger.error('Unable to generate relationship', context.path, relation, context.params.relationship[context.path] );
               return null;
             } 
-              
+            
+            logger.log('info', 'Relationship successfully created', { user: context.params.user.id, nodeA: transactionNode._identity.low, nodeB: partner._identity.low });
             return mapToObject(partner._properties);
           }
         };
 
-        // Try to get
         try {
           if (Object.keys(inputType).includes(relationshipType)) {
             context.result[relation] = await inputType[relationshipType]();
@@ -161,5 +161,7 @@ async function getUserSpecificNode(neode, nodeLabel, nodeName, userNodeInfo, use
     .return('n')
     .execute();
 
-  return await neode.model(nodeLabel).findById(result.records[0]._fields[0].identity.low);
+  return result.records.length > 0
+    ? await neode.model(nodeLabel).findById(result.records[0]._fields[0].identity.low)
+    : false;
 }
