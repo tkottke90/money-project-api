@@ -269,6 +269,21 @@ class Service extends AdapterService {
     return params.raw ? result : this.toObject(result._properties);
   }
     
+  /**
+   * (Internal) Function that checks the db for a node of this type.  If none is found, then one is created
+   * @param {object} params 
+   * @param {object} data 
+   */
+  async findOrCreate(params, data){
+    let node = await this.find(params);
+
+    if (node.records.length < 0) {
+      node = await this.create(data);
+    }
+    
+    return node;
+  }
+    
   async patch(id, data, params) {
     // Compare data to model
     const model = this.neode.models.get(this.modelName);
