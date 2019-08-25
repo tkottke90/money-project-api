@@ -27,6 +27,7 @@
     "test": "npm run eslint && NODE_ENV= npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "NODE_ENV='development' nodemon src/",
+    "dev:out": "npm run dev >> stdout.log",
     "start": "node src/",
     "mocha": "mocha test/ --recursive --exit",
     "deploy": "node scripts/deploy-manager.js revision -t tkottke/money-api",
