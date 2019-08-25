@@ -1,6 +1,7 @@
 // Initializes the `transactions` service on path `/transactions`
 const createService = require('../../../neode-module.js/feathers-service');
 const hooks = require('./transactions.hooks');
+const relationships = require('./transactions.relationships');
 
 module.exports = function (app) {
   
@@ -9,7 +10,8 @@ module.exports = function (app) {
 
   const options = {
     paginate,
-    Model
+    Model,
+    relationships
   };
 
   // Initialize our service with any options it requires
