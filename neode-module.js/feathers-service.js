@@ -181,6 +181,18 @@ class Service extends AdapterService {
     this.schema = (await this.neode.models.get(this.modelName))._schema;
   } 
 
+  /**
+   * Function generates the body of a Neo4j relationship which is typically used to store metadata about a relationship
+   * @param {string} relationship name of relationship to the current node
+   * @param {object} data information about the relationship that can be used by custom functions to populate the relationship
+   */
+  async relationshipProperties(relationship, data) {
+    if (this.relationships[relationship]) {
+      return await this.relationships[relationship](data);
+    }
+    return {};
+  }
+
   async find(params) {
     // Process feathers query syntax and convert to cypher
     const query = this.feathersToNeode(params.query);
