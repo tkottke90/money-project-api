@@ -34,7 +34,8 @@ module.exports = {
     direction: 'out',
     properties: {
       delta: 'float',
-      result: 'float'
+      current_value: 'float',
+      createdAt: 'isoDate'
     }
   },
   user: {
