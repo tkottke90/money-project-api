@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const userLink = require('../../hooks/create-user-link');
 
 module.exports = {
   before: {
@@ -15,7 +16,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [userLink()],
     update: [],
     patch: [],
     remove: []
