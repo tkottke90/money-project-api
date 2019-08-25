@@ -1,12 +1,13 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const userLink = require('../../hooks/create-user-link');
+const onCreateFromTransaction = require('../../hooks/on-create-from-transaction');
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
+    create: [ onCreateFromTransaction() ],
     update: [],
     patch: [],
     remove: []
@@ -16,7 +17,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [userLink()],
+    create: [ userLink() ],
     update: [],
     patch: [],
     remove: []
