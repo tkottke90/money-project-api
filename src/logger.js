@@ -5,11 +5,14 @@ const logger = createLogger({
   // To see more detailed errors, change this to 'debug'
   level: 'info',
   format: format.combine(
+    format.timestamp(),
     format.splat(),
     format.simple()
   ),
   transports: [
-    new transports.Console()
+    new transports.Console(),
+    new transports.File({ filename: '../logs/combined.log', level: 'info'}),
+    new transports.File({ filename: '../logs/error.log', level: 'error' })
   ],
 });
 
