@@ -13,6 +13,11 @@ module.exports = {
     required: true,
     precision: 2
   },
+  allowNegative: {
+    type: 'boolean',
+    require: true,
+    default: true
+  },
   createdAt: {
     type: 'isoDate'
   },

@@ -28,12 +28,6 @@ module.exports = {
   updatedAt: {
     type: 'isoDate'
   },
-  last_login: {
-    type: 'isoDate'
-  },
-  age: {
-    type: 'number'
-  },
   cycles: {
     type: 'relationship',
     target: 'cycle',
@@ -48,13 +42,13 @@ module.exports = {
   categories: {
     type: 'relationships',
     target: 'category',
-    relationship: 'CREATED_CATEGORY',
+    relationship: 'CREATED_BY',
     direction: 'out'
   },
   types: {
     type: 'relationships',
     target: 'type',
-    relationship: 'CREATED_TYPE',
+    relationship: 'CREATED_BY',
     direction: 'out'
   }
 };
