@@ -17,8 +17,10 @@ module.exports = () => {
         const neode = context.app.get('neo4j');
         const user = await neode.first('user', 'id', context.params.user.id);
         const node = await neode.first(context.path, 'id', context.params.raw ? context.result._properties.get('id') : context.result.id);
+        
+        const nodeInfo = context.params.relationships.user || {};
         // Create Relationship
-        await node.relateTo(user, 'user', {});
+        await node.relateTo(user, 'user', nodeInfo);
 
         logger.info(`Create User Link - ${context.path}`, {
           user: context.params.user.id,
