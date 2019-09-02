@@ -27,6 +27,12 @@ module.exports = {
     relationship: 'TYPE_OF_TRANSACTION',
     direction: 'out'
   },
+  cycle: {
+    type: 'relationship',
+    target: 'cycle',
+    relationship: 'DURING',
+    direction: 'out'
+  },
   category: {
     type: 'relationships',
     target: 'category',
