@@ -4,12 +4,9 @@ module.exports = {
     primary: true,
     required: true
   },
-  year: {
-    type: 'number',
-    required: true,
-    integer: true,
-    min: 1990,
-    max: 3000
+  name: {
+    type: 'string',
+    regex: /\d{4}-\d{2}/
   },
   start_date: {
     type: 'isoDate',
@@ -24,5 +21,14 @@ module.exports = {
   },
   updatedAt: {
     type: 'isoDate'
+  },
+  user: {
+    type: 'relationship',
+    target: 'user',
+    direction: 'in',
+    relationship: 'OWNER',
+    properties: {
+      current: 'boolean'
+    },
   }
 };
