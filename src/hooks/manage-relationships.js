@@ -28,9 +28,6 @@ module.exports = () => {
 
       // Iterate over relationships found in the schema
       for (let relation of Object.keys(context.params.relationships)) {
-        // Get node created by this method call
-        const transactionNode = await neode.first( context.path, 'id', context.result.id );
-
 
         // Get the javascript type of the data
         const relationshipType = (() => {
