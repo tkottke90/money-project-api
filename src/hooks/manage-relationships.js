@@ -50,8 +50,24 @@ module.exports = () => {
          */
         const inputType = {
           'undefined': () => { return; },
-          'object': () => {
-            logger.info(`Relationship of ${relation} is set as an object - no OGM implementation at this time`, { data: context.params.relationships[relation] });
+          'object': async () => {
+            // Get node to be related to the initial node.  If it is user specific, get the specific node via
+            // a built query, otherwise get the first node that matches by the name property
+            let partner = await getPartnerNode(neode, relation, context.params.relationships[relation], context.params.user);
+
+            if (!partner) {
+              partner = await neode.create(relation, { name: context.params.relationships[relation] } );
+            }
+        
+            const result = await transactionNode.relateTo(partner, relation, {});
+
+            if (!result) {
+              logger.error('Unable to generate relationship', context.path, relation, context.params.relationship[context.path] );
+              return null;
+            } 
+            
+            logger.log('info', 'Relationship successfully created', { user: context.params.user.id, nodeA: transactionNode._identity.low, nodeB: partner._identity.low });
+            return mapToObject(partner._properties);
           },
           'object-array': async () => {
             // Iterate over array
