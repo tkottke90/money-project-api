@@ -12,7 +12,7 @@ module.exports = () => {
   return async context => {
 
     // If there is a user relationship in the schema
-    if (Object.keys(context.params.relationships).includes('user')) {
+    if (context.params.relationships && Object.keys(context.params.relationships).includes('user')) {
       try {
         const neode = context.app.get('neo4j');
         const user = await neode.first('user', 'id', context.params.user.id);
