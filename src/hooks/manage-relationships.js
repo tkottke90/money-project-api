@@ -22,6 +22,10 @@ module.exports = () => {
     if (context.params.relationships) {
       const neode = context.app.get('neo4j');
 
+      console.log({ path: context.path, property: 'id', result: context.result })
+      // Get node created by this method call
+      const transactionNode = await neode.model(context.path).first('id', context.result.id );
+
       // Iterate over relationships found in the schema
       for (let relation of Object.keys(context.params.relationships)) {
         // Get node created by this method call
