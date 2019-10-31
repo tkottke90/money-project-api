@@ -1,4 +1,4 @@
-FROM node:10.16
+FROM node:12
 
 RUN mkdir -p /home/app
 
@@ -12,6 +12,6 @@ COPY . .
 
 RUN ls -lh
 
-CMD ["npm", "start"]
+CMD ["npm", "start", "--prod"]
 
 EXPOSE 3000
