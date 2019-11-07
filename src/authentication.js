@@ -5,6 +5,19 @@ const oauth2 = require('@feathersjs/authentication-oauth2');
 const GoogleStrategy = require('passport-google-oauth20');
 const GithubStrategy = require('passport-github');
 
+/**
+ * Apply user object to a successful session 
+ */
+const getUser = () => {
+  return async context => {
+    context.result = { ...context.result, user: await context.app.service('users').get(context.params.user.id, {}) };
+
+    delete context.result.user.password;
+
+    return context; 
+  };
+};
+
 module.exports = function (app) {
   const config = app.get('authentication');
 
