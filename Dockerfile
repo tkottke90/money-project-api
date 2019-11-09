@@ -10,8 +10,6 @@ RUN npm install
 
 COPY . .
 
-RUN ls -lh
-
 CMD ["npm", "start", "--prod"]
 
 EXPOSE 3000
