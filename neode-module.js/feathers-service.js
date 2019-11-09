@@ -127,6 +127,8 @@ class Service extends AdapterService {
 
     builder.match('n', this.modelName);
 
+    const relations = [];
+
     Object.keys(queryParams).map( key => {
 
       // Grab skip and limit keywords
@@ -146,6 +148,11 @@ class Service extends AdapterService {
       }
 
       if (key === '$select') return;
+
+      if (/(.*\..*)/.test(key)) {
+        relations.push(key);
+        return;
+      }
 
       if (typeof queryParams[key] !== 'object') {
         builder.where(`n.${key}`, queryParams[key]);
@@ -168,6 +175,17 @@ class Service extends AdapterService {
         }
       }
 
+    });
+
+    // Add Relationships
+    relations.forEach( item => {
+      const [ propertyName, propertyValue ] = item.split('.');
+      const relationship = this.schema[propertyName];
+
+      builder
+        .relationship(relationship.relationship, relationship.direction)
+        .to('u', relationship.model)
+        .where(`u.${propertyValue}`, queryParams[item]);
     });
 
     return builder.return('n').build();
