@@ -1,5 +1,5 @@
 {
-  "name": "neode-module",
+  "name": "feathers-neode",
   "version": "1.0.0",
   "description": "Wrapper to link FeathersJS to Neode OGM",
   "main": "index.js",
