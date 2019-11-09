@@ -1,7 +1,12 @@
-'use strict';
 const Neode = require('neode');
 const fileSystem = require('fs');
 
+/**
+ * Neode module designed to initialize the neode npm module
+ * @module FeathersNeode
+ * 
+ * @param {object} app Express.js application instance
+ */
 module.exports = (app) => {
   const { url, username, password } = app.get('neode');
     
@@ -20,6 +25,8 @@ module.exports = (app) => {
   }
 
   neode.withDirectory(process.cwd() + '/src/models');
+
+  
 
   app.set('neo4j', neode);
 };
